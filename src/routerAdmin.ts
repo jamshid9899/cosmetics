@@ -4,13 +4,17 @@ const routerAdmin = express.Router();
 
 
 
-// ADMIN
+/**  ADMIN */
 routerAdmin.get("/", adminController.goHome);
 
-routerAdmin.get("/login", adminController.getLogin)
+routerAdmin
+   .get("/login", adminController.getLogin)
+   .post("/login/process", adminController.processLogin);
 
 
-routerAdmin.get("/signup", adminController.getSignup)
+routerAdmin
+   .get("/signup", adminController.getSignup)
+   .post("/signup/process", adminController.processSignup);
 
 
 

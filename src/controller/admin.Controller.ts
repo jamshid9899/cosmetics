@@ -32,5 +32,22 @@ adminController.getLogin = (req: Request, res: Response) => {
   }
 };
 
+adminController.processLogin = async (req: Request, res: Response) => {
+  try {
+    console.log("processLogin");
+    res.send("processLogin");
+  } catch (err) {
+    console.log("Error, processLogin:", err);
+  }
+};
+
+adminController.processSignup = async (req: Request, res: Response) => {
+  try {
+    console.log("processSignup");
+    res.send("processSignup");
+  } catch (err) {
+    console.log("Error, processSignup:", err);
+  }
+};
 
 export default adminController;
