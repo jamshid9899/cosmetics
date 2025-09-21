@@ -7,7 +7,7 @@ const adminController: T = {};
 adminController.goHome = (req: Request, res: Response) => {
   try {
     console.log("goHome");
-    res.render("home");
+    res.send("Home page");
   } catch (err) {
     console.log("Error, goHome:", err);
   }
@@ -16,7 +16,7 @@ adminController.goHome = (req: Request, res: Response) => {
 adminController.getSignup = (req: Request, res: Response) => {
   try {
     console.log("getSignup");
-    res.send("signup");
+    res.send("Signup Page");
   } catch (err) {
     console.log("Error, getSignup:", err);
   }
@@ -26,18 +26,11 @@ adminController.getSignup = (req: Request, res: Response) => {
 adminController.getLogin = (req: Request, res: Response) => {
   try {
     console.log("getLogin");
-    res.render("login");
+    res.send("Login Page");
   } catch (err) {
     console.log("Error, getLogin:", err);
   }
 };
-
-
-
-
-
-
-
 
 
 export default adminController;

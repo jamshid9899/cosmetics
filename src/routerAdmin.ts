@@ -4,17 +4,14 @@ const routerAdmin = express.Router();
 
 
 
-// Restaurants
+// ADMIN
 routerAdmin.get("/", adminController.goHome);
 
-routerAdmin
-.get("/login", adminController.getLogin)
+routerAdmin.get("/login", adminController.getLogin)
 
 
-routerAdmin
-.get("/signup", adminController.getSignup)
+routerAdmin.get("/signup", adminController.getSignup)
 
 
-routerAdmin.get("/logout", adminController.logout);
 
 export default routerAdmin
