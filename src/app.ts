@@ -3,6 +3,7 @@ import path from "path"
 import routerAdmin from './routerAdmin';
 import morgan from 'morgan' // logging standarts
 import { MORGAN_FORMAT } from './libs/types/config';
+import router from './router';
 
 // 1-Entrance 
 const app = express();
@@ -22,5 +23,6 @@ app.set("view engine", "ejs");
 
 // 4-Routers
 app.use("/admin", routerAdmin);
+app.use("/", router);
 
 export default app;

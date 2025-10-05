@@ -15,8 +15,4 @@ routerAdmin
    .post("/login/process", adminController.processLogin);
 
 
-
-
-
-
 export default routerAdmin
