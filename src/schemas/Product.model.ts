@@ -44,7 +44,6 @@ const productSchema = new Schema(
 
     productDesc: { 
       type: String,
-      required: true,
      },
 
     productImages: {
@@ -59,10 +58,7 @@ const productSchema = new Schema(
   },
   { timestamps: true }
 );
-  productSchema.index(
-  { productName: 1, productSize: 1, productVolume: 1 },
-  { unique: true }
-);
+  
 productSchema.index(
   { productName: 1, productSize: 1, productVolume: 1 },
   { unique: true }
