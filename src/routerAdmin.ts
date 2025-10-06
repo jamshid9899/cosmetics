@@ -27,4 +27,8 @@ routerAdmin.post("/product/create", adminController.verifyAdmin, // uploadProduc
 
 routerAdmin.post("/product/:id", adminController.verifyAdmin,productController.updateChosenProduct)
 
+// User
+routerAdmin.get("/user/all", adminController.verifyAdmin, adminController.getUsers);
+routerAdmin.post("/user/edit", adminController.verifyAdmin, adminController.updateChosenUser);
+
 export default routerAdmin
