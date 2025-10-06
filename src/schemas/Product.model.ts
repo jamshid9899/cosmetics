@@ -42,7 +42,10 @@ const productSchema = new Schema(
       default: ProductVolume.FIFTY_ML,
     },
 
-    productDesc: { type: String },
+    productDesc: { 
+      type: String,
+      required: true,
+     },
 
     productImages: {
       type: [String],

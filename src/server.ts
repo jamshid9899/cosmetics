@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config();// enviromental variables
 import mongoose from 'mongoose';
 import app from "./app";
 

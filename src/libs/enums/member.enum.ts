@@ -1,5 +1,3 @@
-
-
 export enum MemberType {
     USER = "USER",       // oddiy xaridor
     SELLER = "SELLER",   // sotuvchi / brend
