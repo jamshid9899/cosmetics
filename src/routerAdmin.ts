@@ -18,9 +18,9 @@ routerAdmin
 routerAdmin.get("/logout", adminController.logout);   
 routerAdmin.get("/checkme", adminController.checkAuthSession);
 
-/**PRODUCT */
-// Product 
-// routerAdmin.get("/product/all", adminController.verifyAdmin,  productController.getAllProducts);
+/** PRODUCT */
+
+routerAdmin.get("/product/all", adminController.verifyAdmin,  productController.getAllProducts);
 
 routerAdmin.post("/product/create", adminController.verifyAdmin, // uploadProductImage.single("productImage"), // uploadProductImage
     makeUploader("products").array("productImages", 5), productController.createNewProduct);
