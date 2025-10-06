@@ -13,6 +13,8 @@ routerAdmin
 routerAdmin
    .get("/login", adminController.getLogin)
    .post("/login/process", adminController.processLogin);
+routerAdmin.get("/checkme", adminController.checkAuthSession)
+
 
 
 export default routerAdmin
