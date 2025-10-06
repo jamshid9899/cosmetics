@@ -4,6 +4,14 @@ import routerAdmin from './routerAdmin';
 import morgan from 'morgan' // logging standarts
 import { MORGAN_FORMAT } from './libs/types/config';
 import router from './router';
+import session from "express-session";//(sessions)
+import ConnectMongoDB from "connect-mongodb-session";//(sessions)
+
+const MongoDBStore = ConnectMongoDB(session);//(connect mongodb- creation of sessions collection)
+const store = new MongoDBStore({
+    uri: String(process.env.MONGO_URL),
+    collection: "sessions",
+});
 
 // 1-Entrance 
 const app = express();
@@ -15,7 +23,15 @@ app.use(morgan(MORGAN_FORMAT));
 
 
 // 2- Session
-
+app.use(require('express-session')({
+  secret: String(process.env.SESSION_SECRET),
+  cookie: {
+    maxAge: 1000 * 3600 * 6, //6h
+  },
+  store: store,
+  resave: true,
+  saveUninitialized: true
+}));
 
 // 3-Views
 app.set("views", path.join(__dirname, "views"));
