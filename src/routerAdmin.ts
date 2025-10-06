@@ -13,7 +13,9 @@ routerAdmin
 routerAdmin
    .get("/login", adminController.getLogin)
    .post("/login/process", adminController.processLogin);
-routerAdmin.get("/checkme", adminController.checkAuthSession)
+
+routerAdmin.get("/logout", adminController.logout);   
+routerAdmin.get("/checkme", adminController.checkAuthSession);
 
 
 
