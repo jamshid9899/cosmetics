@@ -16,7 +16,7 @@ export enum ProductVolume {
 
 export enum ProductStatus {
   PAUSE = "PAUSE",      // savdoda emas
-  ACTIVE = "PROCESS",    // aktiv savdoda
+  ACTIVE = "ACTIVE",    // aktiv savdoda
   DELETE = "DELETE",    // o‘chirilgan
 }
 

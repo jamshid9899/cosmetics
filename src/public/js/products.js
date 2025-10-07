@@ -1,85 +1,102 @@
-console.log("Products frontend javascript file");
+console.log("Products frontend JS loaded");
 
-$(function () {
-    $(".product-collection").on("change", () => {
-        const selectValue = $(".product-collection").val();
-        if (selectValue ==="DRINK") {
-            $("#product-collection").hide();
-            $("#product-volume").show();
-        } else {
-            $("#product-volume").hide();
-            $("#product-collection").show();
-        }
+$(function() {
+    const $tableBody = $("#product-table-body");
+    const $rows = $tableBody.find("tr");
+
+    // Toggle new product form
+    $("#toggle-form-btn").on("click", () => {
+        $(".product-form").slideToggle(500);
     });
 
-    $("#process-btn").on("click", () => {
-        $(".dish-container").slideToggle(500);
-        $(".process-btn").css("display", "none");
-    });
-     $("#cancel-btn").on("click", () => {
-        $(".dish-container").slideToggle(500);
-        $(".process-btn").css("display", "none");
+    $("#cancel-btn").on("click", () => {
+        $(".product-form").slideUp(500);
     });
 
-    $(".new-product-status").on("change", async function(e) {
-        const id = e.target.id;
-        const productStatus = $(`#${id}.new-product-status`).val();
-        console.log("id:", id);
-        console.log("productStatus:", productStatus);
-
+    // Product Status Update
+    $(".product-status-select").on("change", async function(e){
+        const id = e.target.id.replace("status-","");
+        const status = $(`#${e.target.id}`).val();
         try {
-            const response = await axios.post(`/admin/product/${id}`, {
-                productStatus: productStatus});
-            if(result.data) {
-                $(".new-product-status").blur();
-            } else alert("Product update failed!");
-        } catch(err) {
-            console.log(err);
-            alert("Product update failed!");
+            await axios.post(`/admin/product/${id}`, { productStatus: status });
+            // Silent update, no alert
+        } catch(err){
+            console.log("Error updating status:", err);
         }
-    })
+    });
 
-});
+    // Form validation
+    $("form.product-form").on("submit", function(e){
+        const requiredFields = ["productName","productPrice","productLeftCount","productCollection","productSize","productVolume","productDesc"];
+        for(let field of requiredFields){
+            if(!$(`input[name=${field}], select[name=${field}], textarea[name=${field}]`).val()){
+                alert("Please fill all fields!");
+                e.preventDefault();
+                return false;
+            }
+        }
+        $(".btn-text").hide();
+        $(".btn-spinner").show();
+    });
 
-function validateForm() {
-    const productName = $(".product-name").val();
-    const productPrice = $(".product-price").val();
-    const productLeftCount = $(".product-left-count").val();
-    const productCollection = $(".product-collection").val();
-    const productDesc = $(".product-desc").val();
-    const productStatus = $(".product-status").val();
-    
-     
-    if (
-        productName === "" ||
-        productPrice === "" ||
-        productLeftCount === "" ||
-        productCollection === "" ||
-        productDesc === "" ||
-        productStatus === ""
-    ) {
-        alert("Please insert all details!");
-        return false;
-    } else return true;
-}
-
-function previewFileHandler(input, order) {
-    const imgClassName = input.className;
-    console.log("input:", input);
-    
-    const file = $(`.${imgClassName}`).get(0).files[0];
-    const fileType = file["type"];
-    const validImageType = ["image/jpg", "image/jpeg", "image/png"];
-
-    if (!validImageType.includes(fileType)) {
-        alert("Please insert only jpeg, jpg and png!");
-    } else {
-        if (file) {
+    // Image Preview
+    function previewFileHandler(input, order){
+        const file = input.files[0];
+        if(file){
+            const validTypes = ["image/jpeg","image/png","image/jpg"];
+            if(!validTypes.includes(file.type)){
+                alert("Only JPEG/JPG/PNG allowed!");
+                input.value = "";
+                return;
+            }
             const reader = new FileReader();
-            reader.onload = function () {
-                $(`#image-section-${order}`).attr("src", reader.result);
-            };
+            reader.onload = function(e){
+                $(`#image-section-${order}`).attr("src", e.target.result);
+            }
             reader.readAsDataURL(file);
         }
     }
-}
+    window.previewFileHandler = previewFileHandler; // Make global for EJS onchange
+
+    // Search logic
+    $("#search-btn").on("click", function(){
+        const query = $("#search-input").val().toLowerCase();
+        $rows.each(function(){
+            const name = $(this).find(".product-name").text().toLowerCase();
+            if(name.includes(query)){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+    $("#reset-btn").on("click", function(){
+        $("#search-input").val("");
+        $rows.show();
+    });
+
+    // Instant search as you type
+    $("#search-input").on("input", function(){
+        const query = $(this).val().toLowerCase();
+        $rows.each(function(){
+            const name = $(this).find(".product-name").text().toLowerCase();
+            if(name.includes(query)){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+    // Optional: Product box hover animation
+    $(".upload-img-box").hover(
+        function() { $(this).css("transform", "scale(1.05)"); },
+        function() { $(this).css("transform", "scale(1)"); }
+    );
+});
+
+
+
+
+

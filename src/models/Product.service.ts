@@ -1,11 +1,11 @@
 import { ProductInput } from "../libs/types/product";
-import ProductModel from "../schemas/Product.model";
 import { Product } from "../libs/types/product";
 import Errors from "../libs/types/Errors";
 import { HttpCode } from "../libs/types/Errors";
 import { Message } from "../libs/types/Errors";
 import { ProductUpdateInput } from "../libs/types/product";
 import { shapeIntoMongooseObjectId } from "../libs/types/config";
+import ProductModel from "../schemas/Product.model";
 
 
 class ProductService {
