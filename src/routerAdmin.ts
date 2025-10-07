@@ -10,13 +10,13 @@ routerAdmin.get("/", adminController.goHome);
 
 routerAdmin
    .get("/signup", adminController.getSignup)
-   .post("/signup/process",  makeUploader("members").single("memberImage"), adminController.processSignup);
+   .post("/signup",  makeUploader("members").single("memberImage"), adminController.processSignup);
 routerAdmin
    .get("/login", adminController.getLogin)
-   .post("/login/process", adminController.processLogin);
+   .post("/login", adminController.processLogin);
 
 routerAdmin.get("/logout", adminController.logout);   
-routerAdmin.get("/checkme", adminController.checkAuthSession);
+routerAdmin.get("/check-me", adminController.checkAuthSession);
 
 /** PRODUCT */
 
