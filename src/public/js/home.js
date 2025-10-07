@@ -1,98 +1,56 @@
-console.log("Home frontend javascript file");
+const canvas = document.getElementById("liquidCanvas");
+const ctx = canvas.getContext("2d");
 
-function fitElementToParent(el, padding) {
-  let timeout = null;
+let w, h;
+function resizeCanvas() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
-  function resize() {
-    if (timeout) clearTimeout(timeout);
-    anime.set(el, { scale: 1 }),
-     pad = padding || 0,
-     parentEl = el.parentNode,
-     elOffsetWidth = el.offsetWidth - pad,
-     parentOffsetWidth = parentEl.offsetWidth,
-     ratio = parentOffsetWidth / elOffsetWidth,
-    timeout = setTimeout(anime.set(el, { scale: ratio }), 10);
+class LiquidParticle {
+  constructor() {
+    this.reset();
   }
-
-  resize();
-  window.addEventListener("resize", resize);
+  reset() {
+    this.x = w/2 + (Math.random() - 0.5) * 200;
+    this.y = h/2 + (Math.random() - 0.5) * 200;
+    this.radius = Math.random() * 8 + 5;
+    this.angle = Math.random() * 2 * Math.PI;
+    this.speed = Math.random() * 0.5 + 0.2;
+    this.color = `rgba(255,182,193,${Math.random() * 0.7 + 0.3})`;
+  }
+  update() {
+    this.angle += this.speed * 0.01;
+    this.x += Math.sin(this.angle) * 0.7;
+    this.y += Math.cos(this.angle) * 0.7;
+    if(this.x < -50 || this.x > w+50 || this.y < -50 || this.y > h+50) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
 }
 
-(function () {
-  const sphereEl = document.querySelector(".sphere-animation"),
-   spherePathEls = sphereEl.querySelectorAll(".sphere path"),
-   pathLength = spherePathEls.length,
-   animations = [];
+const particles = [];
+for(let i=0;i<120;i++) {
+  particles.push(new LiquidParticle());
+}
 
-  fitElementToParent(sphereEl);
-
-  const breathAnimation = anime({
-    begin: function () {
-      for (let i = 0; i < pathLength; i++) {
-        animations.push(
-          anime({
-            targets: spherePathEls[i],
-            stroke: {
-              value: ["rgba(255,75,75,1)", "rgba(80,80,80,.35)"],
-              duration: 500,
-            },
-            translateX: [2, -4],
-            translateY: [2, -4],
-            easing: "easeOutQuad",
-            autoplay: false,
-          })
-        );
-      }
-    },
-    update: function (ins) {
-      animations.forEach(function (animation, i) {
-        let percent = (1 - Math.sin(i * 0.35 + 0.0022 * ins.currentTime)) / 2;
-        animation.seek(animation.duration * percent);
-      });
-    },
-    duration: Infinity,
-    autoplay: false,
+function animate() {
+  ctx.clearRect(0,0,w,h);
+  particles.forEach(p=>{
+    p.update();
+    p.draw();
   });
+  requestAnimationFrame(animate);
+}
 
-  const introAnimation = anime
-    .timeline({
-      autoplay: false,
-    })
-    .add(
-      {
-        targets: spherePathEls,
-        strokeDashoffset: {
-          value: [anime.setDashoffset, 0],
-          duration: 3900,
-          easing: "easeInOutCirc",
-          delay: anime.stagger(190, { direction: "reverse" }),
-        },
-        duration: 2000,
-        delay: anime.stagger(60, { direction: "reverse" }),
-        easing: "linear",
-      },
-      0
-    );
+animate();
 
-  const shadowAnimation = anime(
-    {
-      targets: "#sphereGradient",
-      x1: "25%",
-      x2: "25%",
-      y1: "0%",
-      y2: "75%",
-      duration: 30000,
-      easing: "easeOutQuint",
-      autoplay: false,
-    },
-    0
-  );
 
-  function init() {
-    introAnimation.play();
-    breathAnimation.play();
-    shadowAnimation.play();
-  }
 
-  init();
-})();
+

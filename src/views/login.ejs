@@ -1,45 +1,37 @@
 <%- include('includes/header') %>
 
-<link rel="stylesheet" type="text/css" href="/css/login.css" />
+<link rel="stylesheet" href="/css/login.css" />
 
 <body>
-  <form class="login-container" action="/admin/login" METHOD="POST">
-    <div class="login-frame">
-      <div class="login-top">
-        <span>Enter</span>
-        <div>Go back <a href="/admin" style="color: #6440fb">Home</a></div>
-        <p>
-          Not registered yet?
-          <a href="/admin/signup" style="color: #6440fb">Signup</a>
-        </p>
-      </div>
-      <div class="login-input-frame">
-        <div class="login-input-container">
-          <label>Restaurant *</label>
-          <input
-            type="text"
-            name="memberNick"
-            class="member-nick"
-            placeholder="Username"
-            value=""
-            required
-          />
-        </div>
-        <div class="login-input-container">
-          <label>Password *</label>
-          <input
-            type="password"
-            name="memberPassword"
-            class="member-password"
-            placeholder="Password"
-            value=""
-            required
-          />
-        </div>
-      </div>
-      <button class="login-btn btn" name="login" type="submit">Login</button>
+  <div class="login-container">
+
+    <!-- Header -->
+    <div class="login-header">
+      <div class="back-home"><a href="/admin">← Go back Home</a></div>
+      <div class="signup-link">Not registered yet? <a href="/admin/signup">Signup</a></div>
     </div>
-  </form>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <form action="/admin/login" method="POST">
+        <h2 class="login-title">SkinBloom Login</h2>
+
+        <div class="input-group">
+          <input type="text" name="memberNick" class="member-nick" required placeholder=" "/>
+          <label>Brand Name *</label>
+        </div>
+
+        <div class="input-group">
+          <input type="password" name="memberPassword" class="member-password" required placeholder=" "/>
+          <label>Password *</label>
+        </div>
+
+        <button class="login-btn" type="submit" name="login">Login</button>
+      </form>
+    </div>
+  </div>
 </body>
+
+
 
 <%- include('includes/footer') %>

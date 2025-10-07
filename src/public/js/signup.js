@@ -1,54 +1,45 @@
-console.log("Signup frontend javascript file");
+console.log("SkinBloom Signup JS Loaded");
 
- $(function () {
-    const fileTarget = $(".file-box .upload-hidden");
-    let filename;
+$(function(){
+  const fileInput = $(".member-image"),
+        uploadFrame = $(".upload-img-frame");
 
-    fileTarget.on("change", function () {
-        if (window.FileReader) {
-            const uploadFile = $(this)[0].files[0],
-             fileType = uploadFile["type"],
-             validImageType = ["image/jpg", "image/jpeg", "image/png"];
-            if (!validImageType.includes(fileType)) {
-                alert("Please insert only jpeg, jpg and png!");
-            } else {
-                if (uploadFile) {
-                    console.log(URL.createObjectURL(uploadFile));
-                    $(".upload-img-frame")
-                    .attr("src", URL.createObjectURL(uploadFile))
-                    .addClass("success");
-                }
-                filename = $(this)[0].files[0].name;
-            }
-            $(this).siblings(".upload-name").val(filename);
-        }
-    });
- });
+  fileInput.on("change", function(){
+    const file = this.files[0];
+    if(!file) return;
 
-function validateSignupForm() {
-    const memberNick = $(".member-nick").val(),
-      memberPhone = $(".member-phone").val(),
-      memberPassword = $(".member-password").val(),
-      confirmPassword = $(".confirm-password").val();
-     
-    if (
-        memberNick === "" ||
-        memberPhone === "" ||
-        memberPassword === "" ||
-        confirmPassword === ""
-    ) {
-        alert("Please insert all required inputs!");
-        return false;
+    const validTypes = ["image/jpeg","image/jpg","image/png"];
+    if(!validTypes.includes(file.type)){
+      alert("Only JPEG, JPG, PNG allowed!"); this.value=""; return;
     }
 
-    if (memberPassword !== confirmPassword) {
-        alert("Password differs, please check!");
-        return false;
-    }
-    const memberImage = $(".member-image").get(0)?.files[0]?.name
-    ? $(".member-image").get(0)?.files[0]?.name: null;
-    if (!memberImage) {
-        alert("Please insert restaurant image");
-        return false;
-    }
+    uploadFrame.attr("src", URL.createObjectURL(file));
+  });
+
+  $(".file-input-label").on("dragover", function(e){
+    e.preventDefault(); $(this).css("background-color","#5030d5");
+  });
+  $(".file-input-label").on("dragleave", function(e){
+    e.preventDefault(); $(this).css("background-color","#6440fb");
+  });
+});
+
+function validateSignupForm(){
+  const nick=$(".member-nick").val().trim(),
+        phone=$(".member-phone").val().trim(),
+        pass=$(".member-password").val(),
+        confirm=$(".confirm-password").val(),
+        img=$(".member-image")[0].files[0];
+
+  if(!nick||!phone||!pass||!confirm){ alert("Please fill all required fields!"); return false;}
+  if(pass!==confirm){ alert("Passwords do not match!"); return false;}
+  if(!img){ alert("Please upload brand image!"); return false;}
+  return true;
 }
+
+
+
+
+
+
+
