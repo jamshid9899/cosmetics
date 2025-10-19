@@ -6,6 +6,7 @@ import { MORGAN_FORMAT } from './libs/types/config';
 import router from './router';
 import session from "express-session";//(sessions)
 import ConnectMongoDB from "connect-mongodb-session";//(sessions)
+import cookieParser from 'cookie-parser'; // to save brauzer in cookie the token we generated
 import { T } from './libs/types/common';
 
 const MongoDBStore = ConnectMongoDB(session);//(connect mongodb- creation of sessions collection)
@@ -19,6 +20,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended: true})); //BSSR
 app.use(express.json()); //SPA
+app.use(cookieParser()); // to save brauzer in cookie the token we generated
 app.use(morgan(MORGAN_FORMAT));
 
 
