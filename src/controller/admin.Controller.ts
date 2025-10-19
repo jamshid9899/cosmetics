@@ -73,6 +73,7 @@ adminController.processLogin = async (req: AdminRequest, res: Response) => {
     console.log("processLogin");
     
     const input: LoginInput = req.body;
+
     const result = await memberService.processLogin(input);
 
     req.session.member = result;
