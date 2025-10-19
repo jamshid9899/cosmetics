@@ -11,6 +11,7 @@ import { ProductCollection } from "../libs/enums/product.enum";
 const productService = new ProductService();
 
 const productController: T = {};
+
 /**SPA */
 productController.getProduct = async (req: ExtendedRequest, res: Response) => {
     try {

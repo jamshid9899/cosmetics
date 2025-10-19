@@ -9,15 +9,21 @@ import ProductModel from "../schemas/Product.model";
 import { ProductStatus } from "../libs/enums/product.enum";
 import { T } from "../libs/types/common";
 import { ObjectId } from "mongoose";
+import ViewService from "./View.service";
+import { ViewInput } from "../libs/types/view";
+import { ViewGroup } from "../libs/enums/view.enum";
 
 class ProductService {
   private readonly productModel;
-
+  public viewService;
   constructor() {
     this.productModel = ProductModel;
+  this.viewService = new ViewService();
+
   }
 /**SPA */
- public async getProduct(
+ 
+  public async getProduct(
     memberId: ObjectId | null,
     id: string
   ): Promise<Product> {
@@ -29,7 +35,32 @@ class ProductService {
       })
       .exec();
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
-    
+
+    if (memberId) {
+      // check Existence
+      const input: ViewInput = {
+        memberId: memberId,
+        viewRefId: productId,
+        viewGroup: ViewGroup.PRODUCT,
+      };
+      const existView = await this.viewService.checkViewExistence(input);
+
+      // Insert View
+      if (!existView) {
+        console.log("PLANNING TO INSERT NEW VIEW");
+        await this.viewService.insertMemberView(input);
+
+        // Increase TCount
+        const result = await this.productModel
+          .findByIdAndUpdate(
+            productId,
+            { $inc: { productViews: +1 } },
+            { new: true }
+          )
+          .exec();
+      }
+    }
+
     return result;
   }
 
