@@ -1,6 +1,6 @@
+import cors from "cors"; 
 import express from 'express';
 import path from "path"
-import routerAdmin from './routerAdmin';
 import morgan from 'morgan' // logging standarts
 import { MORGAN_FORMAT } from './libs/types/config';
 import router from './router';
@@ -8,6 +8,7 @@ import session from "express-session";//(sessions)
 import ConnectMongoDB from "connect-mongodb-session";//(sessions)
 import cookieParser from 'cookie-parser'; // to save brauzer in cookie the token we generated
 import { T } from './libs/types/common';
+import routerAdmin from './router-admin';
 
 const MongoDBStore = ConnectMongoDB(session);//(connect mongodb- creation of sessions collection)
 const store = new MongoDBStore({
@@ -22,6 +23,11 @@ app.use(express.urlencoded({extended: true})); //BSSR
 app.use(express.json()); //SPA
 app.use(cookieParser()); // to save brauzer in cookie the token we generated
 app.use(morgan(MORGAN_FORMAT));
+app.use(cors({
+  credentials: true,
+  origin: true,
+}) 
+);
 
 
 
