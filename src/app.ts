@@ -19,6 +19,7 @@ const store = new MongoDBStore({
 // 1-Entrance 
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static("./uploads"))
 app.use(express.urlencoded({extended: true})); //BSSR
 app.use(express.json()); //SPA
 app.use(cookieParser()); // to save brauzer in cookie the token we generated
