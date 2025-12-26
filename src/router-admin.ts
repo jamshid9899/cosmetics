@@ -1,8 +1,9 @@
 import express from "express";
-import adminController from "./controller/admin.controller";
+
 const routerAdmin = express.Router();
 import productController from "./controller/product.controller";
 import makeUploader from "./libs/utils/uploader";
+import adminController from "./controller/admin.Controller";
 
 
 /**  ADMIN */

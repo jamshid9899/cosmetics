@@ -9,6 +9,8 @@ import ConnectMongoDB from "connect-mongodb-session";//(sessions)
 import cookieParser from 'cookie-parser'; // to save brauzer in cookie the token we generated
 import { T } from './libs/types/common';
 import routerAdmin from './router-admin';
+import { Server as SocketIOServer } from "socket.io";
+import http from "http";
 
 const MongoDBStore = ConnectMongoDB(session);//(connect mongodb- creation of sessions collection)
 const store = new MongoDBStore({
@@ -55,4 +57,25 @@ app.set("view engine", "ejs");
 app.use("/admin", routerAdmin);
 app.use("/", router);
 
-export default app; 
+const server = http.createServer(app);
+
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: true,
+    credentials: true,
+  },
+});
+
+let summaryClient = 0;
+
+io.on("connection", (socket) => {
+  summaryClient++;
+  console.log(`Connection | total clients: ${summaryClient}`);
+
+  socket.on("disconnect", () => {
+    summaryClient--;
+    console.log(`Disconnection | total clients: ${summaryClient}`);
+  });
+});
+
+export default server; 

@@ -2,183 +2,268 @@
 <link rel="stylesheet" type="text/css" href="/css/products.css" />
 
 <body>
-<div class="products-container">
-  <div class="navigation-menu">
-    <ul class="nav justify-content-center">
-      <li class="nav-item"><a class="nav-link active" href="/admin/">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="/admin/product/all">Menu</a></li>
-      <li class="nav-item"><a class="nav-link" href="/admin/user/all">Users</a></li>
-      <li class="nav-item" onclick="return confirm('Do you want to logout?')">
-        <a class="nav-link" href="/admin/logout">Logout</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="board">
-    <div class="search-frame">
-      <input type="text" id="search-input" placeholder="Search by product name, type, or size..." />
-      <button id="search-btn">Search</button>
-      <button id="reset-btn">Reset</button>
+  <div class="products-container">
+    <!-- Navigation Menu -->
+    <div class="navigation-menu">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/product/all">Menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/user/all">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/logout" onclick="return confirm('Do you want to logout?')">Logout</a>
+        </li>
+      </ul>
     </div>
 
-    <div class="products-table">
-      <span class="new-product-txt">SkinBloom Products</span>
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Volume</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="product-table-body">
-          <% products.forEach(function(product, index){ %>
-            <tr>
-              <td><%= index + 1 %></td>
-              <td class="product-name"><%= product.productName %></td>
-              <td><%= product.productCollection %></td>
-              <td><%= product.productSize %></td>
-              <td><%= product.productVolume %> ml</td>
-              <td>$<%= product.productPrice %></td>
-              <td><%= product.productLeftCount %></td>
-              <td>
-                <select class="product-status-select" id="status-<%= product._id %>">
-                  <option value="PAUSE" <%= product.productStatus === 'PAUSE' ? 'selected':'' %>>PAUSE</option>
-                  <option value="ACTIVE" <%= product.productStatus === 'ACTIVE' ? 'selected':'' %>>ACTIVE</option>
-                  <option value="DELETE" <%= product.productStatus === 'DELETE' ? 'selected':'' %>>DELETE</option>
-                </select>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-      <div class="new-product-btn-frame">
-        <button class="btn btn-primary" id="toggle-form-btn">+ New Product</button>
-      </div>
-    </div>
-
-    <form action="/admin/product/create" method="POST" enctype="multipart/form-data" class="product-form">
-      <span class="new-product-txt">NEW PRODUCT DETAIL</span>
-
-      <div class="input-group">
-        <label>Product Name *</label>
-        <input type="text" name="productName" class="input-field" placeholder="Enter product name" required />
-      </div>
-
-      <div class="input-group">
-        <label>Price ($) *</label>
-        <input type="number" name="productPrice" class="input-field" placeholder="0.00" min="0" step="0.01" required />
-      </div>
-
-      <div class="input-group">
-        <label>Stock Quantity *</label>
-        <input type="number" name="productLeftCount" class="input-field" placeholder="0" min="0" required />
-      </div>
-
-      <div class="input-group">
-        <label>Product Type *</label>
-        <select name="productCollection" class="input-field" required>
-          <option value="PERFUME" selected>Perfume</option>
-          <option value="SKINCARE">Skincare</option>
-          <option value="MAKEUP">Makeup</option>
-          <option value="HAIRCARE">Haircare</option>
-          <option value="BODYCARE">Bodycare</option>
-          <option value="ACCESSORY">Accessory</option>
-          <option value="OTHER">Other</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label>Size *</label>
-        <select name="productSize" class="input-field" required>
-          <option value="SMALL">Small</option>
-          <option value="NORMAL" selected>Normal</option>
-          <option value="LARGE">Large</option>
-          <option value="SET">Set</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label>Volume (ml) *</label>
-        <select name="productVolume" class="input-field" required>
-          <option value="10">10 ml</option>
-          <option value="30" selected>30 ml</option>
-          <option value="50">50 ml</option>
-          <option value="100">100 ml</option>
-          <option value="150">150 ml</option>
-          <option value="200">200 ml</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label>Description *</label>
-        <textarea name="productDesc" class="input-field" placeholder="Enter product description..." required></textarea>
-      </div>
-
-      <div class="img-frame">
-        <label>Product Images * (First image is required)</label>
-        <div class="media-frame">
-          <div class="upload-img-box" data-order="1">
-            <img src="/img/upload.svg" id="image-section-1" alt="Upload preview 1"/>
-            <input type="file" name="productImages" class="image-1" accept="image/jpeg,image/png,image/jpg,image/webp" required />
-          </div>
-          <div class="upload-img-box" data-order="2">
-            <img src="/img/upload.svg" id="image-section-2" alt="Upload preview 2"/>
-            <input type="file" name="productImages" class="image-2" accept="image/jpeg,image/png,image/jpg,image/webp" />
-          </div>
-          <div class="upload-img-box" data-order="3">
-            <img src="/img/upload.svg" id="image-section-3" alt="Upload preview 3"/>
-            <input type="file" name="productImages" class="image-3" accept="image/jpeg,image/png,image/jpg,image/webp" />
-          </div>
-          <div class="upload-img-box" data-order="4">
-            <img src="/img/upload.svg" id="image-section-4" alt="Upload preview 4"/>
-            <input type="file" name="productImages" class="image-4" accept="image/jpeg,image/png,image/jpg,image/webp" />
-          </div>
-          <div class="upload-img-box" data-order="5">
-            <img src="/img/upload.svg" id="image-section-5" alt="Upload preview 5"/>
-            <input type="file" name="productImages" class="image-5" accept="image/jpeg,image/png,image/jpg,image/webp" />
+    <!-- Main Content -->
+    <div class="restaurant-menu-frame">
+      <div class="board">
+        
+        <!-- Products Table -->
+        <div class="dishes-table">
+          <span class="new-dish-txt">SkinBloom Products</span>
+          
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Volume</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (products && products.length > 0) { %>
+                <% products.forEach(function(product, index) { %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= product.productName %></td>
+                    <td><%= product.productCollection %></td>
+                    <td><%= product.productSize %></td>
+                    <td><%= product.productVolume %> ml</td>
+                    <td>$<%= product.productPrice %></td>
+                    <td><%= product.productLeftCount %></td>
+                    <td>
+                      <select class="spec-select new-product-status" id="<%= product._id %>">
+                        <option value="PAUSE" <%= product.productStatus === 'PAUSE' ? 'selected' : '' %>>PAUSE</option>
+                        <option value="ACTIVE" <%= product.productStatus === 'ACTIVE' ? 'selected' : '' %>>ACTIVE</option>
+                        <option value="DELETE" <%= product.productStatus === 'DELETE' ? 'selected' : '' %>>DELETE</option>
+                      </select>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 40px;">
+                    No products found. Add your first product!
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+          
+          <div class="long-input" style="align-items: flex-end;">
+            <button type="button" class="btn btn-primary" id="process-btn">
+              + New Product
+            </button>
           </div>
         </div>
-      </div>
 
-      <div class="form-buttons">
-        <button type="button" id="cancel-btn" class="btn btn-danger">✕ Cancel</button>
-        <button type="submit" id="create-btn" class="btn btn-primary">
-          <span class="btn-text">✓ Create Product</span>
-          <span class="btn-spinner">⏳</span>
-        </button>
-      </div>
-    </form>
+        <!-- New Product Form -->
+        <form 
+          action="/admin/product/create" 
+          method="POST" 
+          class="dish-container" 
+          enctype="multipart/form-data"
+          onsubmit="return validateForm()"
+        >
+          <span class="new-dish-txt">New Product Details</span>
 
+          <!-- Product Name -->
+          <div class="long-input">
+            <label>Product Name *</label>
+            <input 
+              type="text" 
+              name="productName" 
+              class="product-name"
+              placeholder="Enter product name"
+              required
+            />
+          </div>
+
+          <!-- Hidden Status -->
+          <input type="hidden" name="productStatus" class="product-status" value="PAUSE" />
+
+          <!-- Price & Stock -->
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Price ($) *</label>
+              <input 
+                type="number" 
+                name="productPrice" 
+                class="product-price"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="half-input">
+              <label>Stock Quantity *</label>
+              <input 
+                type="number" 
+                name="productLeftCount" 
+                class="product-left-count"
+                placeholder="0"
+                min="0"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Type & Size -->
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Product Type *</label>
+              <select name="productCollection" class="product-collection" required>
+                <option value="PERFUME" selected>Perfume</option>
+                <option value="SKINCARE">Skincare</option>
+                <option value="MAKEUP">Makeup</option>
+                <option value="HAIRCARE">Haircare</option>
+                <option value="BODYCARE">Bodycare</option>
+                <option value="ACCESSORY">Accessory</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+            <div class="half-input">
+              <label>Product Size *</label>
+              <select name="productSize" class="product-size" required>
+                <option value="SMALL">Small</option>
+                <option value="NORMAL" selected>Normal</option>
+                <option value="LARGE">Large</option>
+                <option value="SET">Set</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Volume -->
+          <div class="half-input-frame">
+            <div class="half-input">
+              <label>Volume (ml) *</label>
+              <select name="productVolume" class="product-volume" required>
+                <option value="10">10 ml</option>
+                <option value="30" selected>30 ml</option>
+                <option value="50">50 ml</option>
+                <option value="100">100 ml</option>
+                <option value="150">150 ml</option>
+                <option value="200">200 ml</option>
+              </select>
+            </div>
+            <div class="half-input"></div>
+          </div>
+
+          <!-- Description -->
+          <div class="long-input">
+            <label>Product Description *</label>
+            <textarea 
+              name="productDesc" 
+              class="product-desc"
+              placeholder="Enter product description..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Product Images -->
+<div class="img-frame">
+  <label>Product Images * (First image required)</label>
+  <div class="media-frame">
+    <!-- Image 1 -->
+    <div class="upload-img-box">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LXNpemU9IjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjY2NjIj7wn5O3PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5Ij5VcGxvYWQ8L3RleHQ+PC9zdmc+" id="image-section-1" />
+      <input 
+        type="file" 
+        name="productImages" 
+        class="image-one"
+        accept="image/jpeg,image/jpg,image/png"
+        onchange="previewFileHandler(this, 1)"
+        required
+      />
+    </div>
+    <!-- Image 2 -->
+    <div class="upload-img-box">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LXNpemU9IjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjY2NjIj7wn5O3PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5Ij5VcGxvYWQ8L3RleHQ+PC9zdmc+" id="image-section-2" />
+      <input 
+        type="file" 
+        name="productImages" 
+        class="image-two"
+        accept="image/jpeg,image/jpg,image/png"
+        onchange="previewFileHandler(this, 2)"
+      />
+    </div>
+    <!-- Image 3 -->
+    <div class="upload-img-box">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LXNpemU9IjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjY2NjIj7wn5O3PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5Ij5VcGxvYWQ8L3RleHQ+PC9zdmc+" id="image-section-3" />
+      <input 
+        type="file" 
+        name="productImages" 
+        class="image-three"
+        accept="image/jpeg,image/jpg,image/png"
+        onchange="previewFileHandler(this, 3)"
+      />
+    </div>
+    <!-- Image 4 -->
+    <div class="upload-img-box">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LXNpemU9IjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjY2NjIj7wn5O3PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5Ij5VcGxvYWQ8L3RleHQ+PC9zdmc+" id="image-section-4" />
+      <input 
+        type="file" 
+        name="productImages" 
+        class="image-four"
+        accept="image/jpeg,image/jpg,image/png"
+        onchange="previewFileHandler(this, 4)"
+      />
+    </div>
+    <!-- Image 5 -->
+    <div class="upload-img-box">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LXNpemU9IjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjY2NjIj7wn5O3PC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5Ij5VcGxvYWQ8L3RleHQ+PC9zdmc+" id="image-section-5" />
+      <input 
+        type="file" 
+        name="productImages" 
+        class="image-five"
+        accept="image/jpeg,image/jpg,image/png"
+        onchange="previewFileHandler(this, 5)"
+      />
+    </div>
   </div>
 </div>
+          <!-- Form Buttons -->
+          <div class="operation-buttons">
+            <button type="button" class="btn btn-danger" id="cancel-btn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="create-btn">
+              Create Product
+            </button>
+          </div>
+        </form>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/js/products.js"></script>
+      </div>
+    </div>
+  </div>
 
-<script>
-// Image preview handler
-$(function() {
-    $('input[type="file"]').each(function() {
-        const order = $(this).closest('.upload-img-box').data('order');
-        $(this).on('change', function() {
-            previewFileHandler(this, order);
-        });
-    });
-});
-</script>
-
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="/js/products.js"></script>
 </body>
+
 <%- include('includes/footer') %>
-
-
-
-
-
-
