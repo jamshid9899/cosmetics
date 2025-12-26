@@ -1,0 +1,37 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" href="/css/login.css" />
+
+<body>
+  <div class="login-container">
+
+    <!-- Header -->
+    <div class="login-header">
+      <div class="back-home"><a href="/admin">← Go back Home</a></div>
+      <div class="signup-link">Not registered yet? <a href="/admin/signup">Signup</a></div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <form action="/admin/login" method="POST">
+        <h2 class="login-title">SkinBloom Login</h2>
+
+        <div class="input-group">
+          <input type="text" name="memberNick" class="member-nick" required placeholder=" "/>
+          <label>Brand Name *</label>
+        </div>
+
+        <div class="input-group">
+          <input type="password" name="memberPassword" class="member-password" required placeholder=" "/>
+          <label>Password *</label>
+        </div>
+
+        <button class="login-btn" type="submit" name="login">Login</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+
+
+<%- include('includes/footer') %>

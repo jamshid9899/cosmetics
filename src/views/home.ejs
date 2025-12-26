@@ -1,0 +1,50 @@
+<%- include('includes/header') %>
+
+  <link rel="stylesheet" href="/css/home.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+  <!-- Navigation menu fixed at top -->
+  <nav class="navigation-menu">
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin">Home</a>
+      </li>
+
+      <% if (!member) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/signup">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/login">Login</a>
+      </li>
+      <% } else { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/product/all">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/user/all">Users</a>
+      </li>
+      <li class="nav-item" onclick="return confirm('Do you want to logout?')">
+        <a class="nav-link" href="/admin/logout">Logout</a>
+      </li>
+      <% } %>
+    </ul>
+  </nav>
+
+  <!-- Liquid Bloom Animation -->
+  <div class="home-container">
+    <canvas id="liquidCanvas"></canvas>
+    <div class="home-text">
+      <h1>SkinBloom <span>Cosmetics</span></h1>
+      <p>Experience the natural bloom of your beauty</p>
+    </div>
+  </div>
+
+  <script src="/js/home.js"></script>
+</body>
+</html>
+
+
+<%- include('includes/footer') %>
+
